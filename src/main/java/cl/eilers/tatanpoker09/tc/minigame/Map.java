@@ -65,7 +65,6 @@ public class Map {
 	public static void registerNewMap(Map map){
 		mapsList.add(map);
 		System.out.println("[TCMinigames] Se ha cargado: "+map.getName());
-		System.out.println(map.getYmlConfig());
 	}
 	
 	public static int loadMaps(){
@@ -73,7 +72,6 @@ public class Map {
 		for(File mapFolder : Main.getMapsdirectory().listFiles()){
 			if(new File(mapFolder+"/map.yml").exists() && new File(mapFolder+"/region").exists() && new File(mapFolder+ "/level.dat").exists()){
 				//Loads map info from yml file
-				System.out.println(new File(mapFolder+"/map.yml").exists());
 				YamlConfiguration ymlFile = YamlConfiguration.loadConfiguration(new File(mapFolder+"/map.yml"));
 				String name = MapYMLUtils.loadName(ymlFile);
 				String[] authors = MapYMLUtils.loadAuthors(ymlFile);

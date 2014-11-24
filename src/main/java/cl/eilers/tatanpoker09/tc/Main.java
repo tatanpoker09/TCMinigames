@@ -11,7 +11,9 @@ import cl.eilers.tatanpoker09.tc.commands.JugarCommand;
 import cl.eilers.tatanpoker09.tc.commands.CambiarMapaCommand;
 import cl.eilers.tatanpoker09.tc.commands.UnirCommand;
 import cl.eilers.tatanpoker09.tc.listeners.BlockListener;
+import cl.eilers.tatanpoker09.tc.listeners.CommandListener;
 import cl.eilers.tatanpoker09.tc.listeners.EntityListener;
+import cl.eilers.tatanpoker09.tc.listeners.PlayerListener;
 import cl.eilers.tatanpoker09.tc.minigame.Map;
 /*TODO
  * TEST MAP LOADING
@@ -30,7 +32,7 @@ public class Main extends JavaPlugin{
 		if(!getMapsdirectory().exists()) getMapsdirectory().mkdir();
 		Map.loadMaps();
 		plugin = this;
-		registerEvents(getPlugin(), new BlockListener(), new EntityListener());
+		registerEvents(getPlugin(), new BlockListener(), new EntityListener(), new CommandListener(), new PlayerListener());
 		getCommand("jugar").setExecutor(new JugarCommand());
 		getCommand("cambiarmapa").setExecutor(new CambiarMapaCommand());
 		getCommand("unir").setExecutor(new UnirCommand());

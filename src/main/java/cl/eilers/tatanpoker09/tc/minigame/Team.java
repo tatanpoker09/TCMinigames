@@ -66,16 +66,16 @@ public class Team {
 		return players;
 	}
 	public void addPlayer(Player player){
-		player.sendMessage(ChatColor.GREEN+"Has entrado a:"+ChatColor.BLUE+this.getName());
+		player.sendMessage(ChatColor.GREEN+"Has entrado a: "+this.getColor()+this.getName());
 		players.add(player);
-		if(Minigame.getCurrentMinigame().getMap().getType().equals(MapType.CIRCLE_OF_BOOM)){
+		if(Minigame.getCurrentMinigame().getMap().getType().equals(MapType.CIRCLE_OF_BOOM) && !this.equals(Minigame.getObservers())){
 			((CircleOfBoom)Minigame.getCurrentMinigame()).addSurvivor(new Survivor(player));
 		}
 	}
 	
 	public static Team getTeam(String name){
 		for(Team team : Minigame.getCurrentMinigame().getTeams()){
-			if(team.getName().equalsIgnoreCase("name")){
+			if(team.getName().toLowerCase().startsWith(name.toLowerCase())){
 				return team;
 			}
 		}

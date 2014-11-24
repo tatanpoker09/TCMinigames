@@ -36,9 +36,10 @@ public class CircleOfBoom extends Minigame{
 	public void loadYML(){
 		setRadious(getMap().getYmlConfig().getInt("radius"));
 		center = ScoreboardUtils.getLocation(getMap().getYmlConfig().getString("center"), this);
-		for(String node : getMap().getYmlConfig().getConfigurationSection("spawnpoints").getKeys(false)){
+		for(String node : getMap().getYmlConfig().getConfigurationSection("spawnpoints").getKeys(true)){
 			addSpawnPoints(ScoreboardUtils.getLocation(node, this));
 		}
+		System.out.println(getTeams().size());
 	}
 	
 	public int getRadious() {

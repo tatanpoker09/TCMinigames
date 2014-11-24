@@ -20,26 +20,29 @@ public class UnirCommand implements CommandExecutor{
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
 			String[] args) {
 		Player playerSender = (Player)sender;
-		if(Minigame.getCurrentMinigame().getMap().getType().equals(MapType.CIRCLE_OF_BOOM)){
-			if(Minigame.getCurrentMinigame().getState().equals(MatchState.STARTED)){
-				sender.sendMessage(ChatColor.DARK_RED+"[TCMinigames]"+ChatColor.RED+"Esta partida ya ha empezado.");
+		if(Minigame.getCurrentMinigame()!=null){
+			if(Minigame.getCurrentMinigame().getMap().getType().equals(MapType.CIRCLE_OF_BOOM)){
+				if(Minigame.getCurrentMinigame().getState().equals(MatchState.STARTED)){
+					sender.sendMessage(ChatColor.DARK_RED+"[TCMinigames]"+ChatColor.RED+"Esta partida ya ha empezado.");
+				}
 			}
-		}
-		if(args.length>0){
-			Team shortest = Minigame.getCurrentMinigame().getTeams().get(0);
-			for(Team team : Minigame.getCurrentMinigame().getTeams()) {
-			    if (team.getPlayers().size() < shortest.getPlayers().size()) {
-			        shortest = team;
-			    }
-			}
-			shortest.addPlayer(playerSender);
-		} else {
-			Team teamToJoin = Team.getTeam(args[0]);
-			if(teamToJoin==null){
-				playerSender.sendMessage(ChatColor.RED+ "No se ha encontrado un equipo con ese nombre");
-			} else {
-				teamToJoin.addPlayer(playerSender);
+			if(args.length==0){
+				Team shortest = Minigame.getCurrentMinigame().getTeams().get(0);
+				for(Team team : Minigame.getCurrentMinigame().getTeams()) {
+					if (team.getPlayers().size() < shortest.getPlayers().size()) {
+						shortest = team;
+					}
+				}
+				shortest.addPlayer(playerSender);
 				return true;
+			} else {
+				Team teamToJoin = Team.getTeam(args[0]);
+				if(teamToJoin==null){
+					playerSender.sendMessage(ChatColor.RED+ "No se ha encontrado un equipo con ese nombre");
+				} else {
+					teamToJoin.addPlayer(playerSender);
+					return true;
+				}
 			}
 		}
 		return false;

@@ -1,7 +1,7 @@
 main: cl.eilers.tatanpoker09.tc.Main
 name: TCMinigames
 description: A minigame plugin to play with your friends!
-version: 0.0.5
+version: 0.0.7
 commands:
   unir:
   cambiarmapa:
