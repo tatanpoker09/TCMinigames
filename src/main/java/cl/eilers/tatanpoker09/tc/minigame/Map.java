@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -19,7 +18,6 @@ public class Map {
 	private MapType type;
 	private YamlConfiguration ymlConfig;
 	private static ArrayList<Map> mapsList = new ArrayList<Map>();
-	private World world;
 	
 	public Map(String name, String[] authors, MapType type, YamlConfiguration ymlConfig, File mapDirectory){
 		this.setMapDirectory(mapDirectory);
@@ -86,16 +84,15 @@ public class Map {
 		return mapsList;
 	}
 
-	public World getWorld() {
-		return world;
-	}
 	
-	public static void loadMap(Map map){
+	public static void loadMap(Map map, int id){
 		try {
-			FileUtils.copyFolder(map.getMapDirectory(), new File(map.getName()));
-			map.world = WorldCreator.name(map.getName()).createWorld();
+			FileUtils.copyFolder(map.getMapDirectory(), new File(map.getName()+id));
+			new File(map.getName()+id+"/uid.dat").delete();
+			Minigame.getCurrentMinigame().setWorld(WorldCreator.name(map.getName()+id).createWorld());
+			
 		} catch (IOException e) {
-			Main.getPlugin().getLogger().info("[TCMinigames] Error whie loading map: " + map.getName());
+			Main.getPlugin().getLogger().info("[TCMinigames] Error while loading map: " + map.getName());
 			e.printStackTrace();
 		}
 	}
@@ -107,5 +104,15 @@ public class Map {
 			}
 		}
 		return returnedMap;
+	}
+
+	public static void loadMap(Map map) {
+		try {
+			FileUtils.copyFolder(map.getMapDirectory(), new File(map.getName()));
+			WorldCreator.name(map.getName()).createWorld();
+		} catch (IOException e) {
+			Main.getPlugin().getLogger().info("[TCMinigames] Error while loading map: " + map.getName());
+			e.printStackTrace();
+		}
 	}
 }

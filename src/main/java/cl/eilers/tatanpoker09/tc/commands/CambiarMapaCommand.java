@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import cl.eilers.tatanpoker09.tc.minigame.Map;
 import cl.eilers.tatanpoker09.tc.minigame.Minigame;
 import cl.eilers.tatanpoker09.tc.utils.general.TatanUtils;
-import cl.eilers.tatanpoker09.tc.utils.general.Timer;
 
 public class CambiarMapaCommand implements CommandExecutor{
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
@@ -24,8 +23,8 @@ public class CambiarMapaCommand implements CommandExecutor{
 				sender.sendMessage(ChatColor.RED+"No se encontró un mapa con ese nombre.");
 				return false;
 			} else {
+				sender.sendMessage(ChatColor.GREEN+"Se ha seleccionado: "+ChatColor.DARK_GREEN+mapToPlay.getName());
 				Minigame.setNextMap(mapToPlay);
-				Timer.cycleTimer(5);
 				return true;
 			}
 		} else {

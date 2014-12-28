@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>cl.eilers.tatanpoker09</groupId>
   <artifactId>TCMinigames</artifactId>
-  <version>0.0.6-SNAPSHOT</version>
+  <version>0.0.9-SNAPSHOT</version>
   <name>Tatan's Minigames</name>
   <description>Simple and Quick minigames to play with your friends	</description>
  <build>

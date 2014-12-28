@@ -5,6 +5,8 @@ import java.util.Calendar;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import cl.eilers.tatanpoker09.tc.minigame.cob.CircleOfBoom;
@@ -18,24 +20,32 @@ public class Minigame {
 	private Calendar date;
 	private ArrayList<Team> teams = new ArrayList<Team>();
 	private MatchState state;
-	private final static Team observers = new Team("Observers", ChatColor.AQUA);
+	private static Team observers;
 	private static Minigame currentMinigame;
-	
-	public Minigame(Map map){
-		Map.loadMap(map);
+	private int id;
+	private World world;
+
+	public Minigame(Map map, int id){
+		observers = new Team("Observers", ChatColor.AQUA);
+		setCurrentMinigame(this);
+		this.id = id;
+		Map.loadMap(map, id);
 		teams.add(observers);
 		this.map = map;
 		date = Calendar.getInstance();
-		setCurrentMinigame(this);
 		state = MatchState.PREMATCH;
 		getObservers().setSpawn(ScoreboardUtils.getLocation(getMap().getYmlConfig().getString("spawn"), this));
 		for(String name : getMap().getYmlConfig().getConfigurationSection("teams").getKeys(false)){
 			ChatColor color = ChatColor.valueOf(getMap().getYmlConfig().getString("teams."+name+".color"));
 			addTeam(new Team(name, color));
 		}
-		for(Player player : Bukkit.getOnlinePlayers()) player.teleport(getObservers().getSpawn());
+		for(Player player : Bukkit.getOnlinePlayers()){
+			player.teleport(getObservers().getSpawn());
+			player.setGameMode(GameMode.CREATIVE);
+			getObservers().addPlayer(player);
+		}
 	}
-	
+
 
 	public Map getMap() {
 		return map;
@@ -53,20 +63,20 @@ public class Minigame {
 		return date;
 	}
 
-	public static void loadMinigame(Map map){
+	public static void loadMinigame(Map map, int id){
 		switch(map.getType()){
 		case CIRCLE_OF_BOOM:
-			new CircleOfBoom(map);
+			new CircleOfBoom(map, id);
 			break;
 		case KEY_QUEST:
-			new KeyQuest(map);
+			new KeyQuest(map, id);
 			break;
 		case WATER_THE_MONUMENT:
-			new WaterTheMonument(map);
+			new WaterTheMonument(map, id);
 			break;
 		default:
 			break;
-		
+
 		}
 	}
 	public static Team getObservers() {
@@ -88,12 +98,14 @@ public class Minigame {
 	public void addTeam(Team teamToAdd) {
 		teams.add(teamToAdd);
 	}
-	
+
 	public int getPlayersPlaying(){
 		int players = 0;
 		for(Team team : teams){
-			for(@SuppressWarnings("unused") Player player : team.getPlayers()){
-				players++;
+			if(!team.equals(getObservers())){
+				for(@SuppressWarnings("unused") Player player : team.getPlayers()){
+					players++;
+				}
 			}
 		}
 		return players;
@@ -105,5 +117,23 @@ public class Minigame {
 
 	public void setState(MatchState state) {
 		this.state = state;
+	}
+
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+	public void setWorld(World world) {
+		this.world = world;
+	}
+	public World getWorld(){
+		return world;
 	}
 }

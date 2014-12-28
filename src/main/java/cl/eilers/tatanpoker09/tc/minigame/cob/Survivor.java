@@ -3,6 +3,8 @@ package cl.eilers.tatanpoker09.tc.minigame.cob;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import cl.eilers.tatanpoker09.tc.minigame.Minigame;
+
 
 public class Survivor{
 	private Player player;
@@ -22,5 +24,13 @@ public class Survivor{
 	}
 	public void setSpawnPoint(Location spawnPoint) {
 		this.spawnPoint = spawnPoint;
+	}
+	public static Survivor getSurvivor(Player playerSender) {
+		for(Survivor survivor : ((CircleOfBoom)Minigame.getCurrentMinigame()).getSurvivors()){
+			if(survivor.getPlayer().equals(playerSender)){
+				return survivor;
+			}
+		}
+		return null;
 	}
 }

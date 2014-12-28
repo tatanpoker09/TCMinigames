@@ -104,4 +104,10 @@ public class Team {
 		}
 		destination.addPlayer(player);
 	}
+
+	public void clear() {
+		for(Player player : this.getPlayers()){
+			this.remove(player);
+		}
+	}
 }

@@ -5,9 +5,12 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import cl.eilers.tatanpoker09.tc.minigame.Map;
 import cl.eilers.tatanpoker09.tc.minigame.Minigame;
+import cl.eilers.tatanpoker09.tc.minigame.Team;
 import cl.eilers.tatanpoker09.tc.utils.cob.COBUtils;
 import cl.eilers.tatanpoker09.tc.utils.general.ScoreboardUtils;
 import cl.eilers.tatanpoker09.tc.utils.general.Timer;
@@ -19,12 +22,18 @@ public class CircleOfBoom extends Minigame{
 	private int radius;
 	private Location center;
 	private List<Block> blocksInCircle = new ArrayList<Block>();
+	private boolean correr;
+	private int vida;
+	private Player winner;
+	private boolean uhc;
+	private int ronda;
+	private boolean spawnPointCapacity;
 
-	public CircleOfBoom(Map map) {
-		super(map);
-			getSurvivors().clear();
-			loadYML();
-			setBlocksInCircle(COBUtils.loadBlocks(center, radius));
+	public CircleOfBoom(Map map, int id) {
+		super(map, id);
+		getSurvivors().clear();
+		loadYML();
+		setBlocksInCircle(COBUtils.loadBlocks(center, radius));
 	}
 	public ArrayList<Survivor> getSurvivors() {
 		return survivors;
@@ -34,14 +43,44 @@ public class CircleOfBoom extends Minigame{
 	}
 
 	public void loadYML(){
-		setRadious(getMap().getYmlConfig().getInt("radius"));
-		center = ScoreboardUtils.getLocation(getMap().getYmlConfig().getString("center"), this);
-		for(String node : getMap().getYmlConfig().getConfigurationSection("spawnpoints").getKeys(true)){
-			addSpawnPoints(ScoreboardUtils.getLocation(node, this));
+		YamlConfiguration ymlFile = getMap().getYmlConfig();
+		setRadious(ymlFile.getInt("radius"));
+		center = ScoreboardUtils.getLocation(ymlFile.getString("center"), this);
+		if(ymlFile.get("spawnpoints")!=null){
+			for(String node : ymlFile.getConfigurationSection("spawnpoints").getKeys(true)){
+				String location = ymlFile.getString("spawnpoints."+node);
+				addSpawnPoints(ScoreboardUtils.getLocation(location, this));
+			}
 		}
-		System.out.println(getTeams().size());
+		if(ymlFile.get("correr")!=null){
+			setCorrer(ymlFile.getBoolean("correr"));
+		} else {
+			setCorrer(true);
+		}
+		if(ymlFile.get("spawnpointcapacity")!=null){
+			setSpawnPointCapacity(ymlFile.getBoolean("spawnpointcapacity"));
+		} else {
+			setSpawnPointCapacity(false);
+		}
+		if(ymlFile.get("vida")!=null){
+			setVida(ymlFile.getInt("vida"));
+		} else {
+			vida = 5;
+		}
+		if(ymlFile.get("uhc")!=null){
+			setUhc(ymlFile.getBoolean("uhc"));
+		}
+		if(isSpawnPointCapacity()){
+			Team.getTeam("Survivors").setMaxCapacity(spawnPoints.size());
+		} else {
+			if(ymlFile.getInt("maxcapacity")==0){
+				Team.getTeam("Survivors").setMaxCapacity(999);
+			} else {
+				Team.getTeam("Survivors").setMaxCapacity(ymlFile.getInt("maxcapacity"));
+			}
+		}
 	}
-	
+
 	public int getRadious() {
 		return radius;
 	}
@@ -78,5 +117,40 @@ public class CircleOfBoom extends Minigame{
 	public void setSurvivors(ArrayList<Survivor> survivors) {
 		this.survivors = survivors;
 	}
-
+	public boolean isCorrer() {
+		return correr;
+	}
+	public void setCorrer(boolean correr) {
+		this.correr = correr;
+	}
+	public int getVida() {
+		return vida;
+	}
+	public void setVida(int vida) {
+		this.vida = vida;
+	}
+	public Player getWinner() {
+		return winner;
+	}
+	public void setWinner(Player winner) {
+		this.winner = winner;
+	}
+	public boolean isUhc() {
+		return uhc;
+	}
+	public void setUhc(boolean uhc) {
+		this.uhc = uhc;
+	}
+	public int getRonda() {
+		return ronda;
+	}
+	public void addRonda(int ronda) {
+		this.ronda = this.ronda + ronda;
+	}
+	public boolean isSpawnPointCapacity() {
+		return spawnPointCapacity;
+	}
+	public void setSpawnPointCapacity(boolean spawnPointCapacity) {
+		this.spawnPointCapacity = spawnPointCapacity;
+	}
 }

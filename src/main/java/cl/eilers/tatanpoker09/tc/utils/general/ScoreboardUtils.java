@@ -28,7 +28,7 @@ public class ScoreboardUtils {
 		for (int a = 0; a < 3; a++) {
 			parsed[a] = Double.parseDouble(arg[a]);
 		}
-		Location returnedLocation = new Location (minigame.getMap().getWorld(), parsed[0]-0.5, parsed[1]+0.5, parsed[2]+0.5);
+		Location returnedLocation = new Location (minigame.getWorld(), parsed[0]-0.5, parsed[1]+0.5, parsed[2]+0.5);
 		return returnedLocation;
 	}
 }

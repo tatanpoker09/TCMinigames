@@ -5,8 +5,8 @@ import cl.eilers.tatanpoker09.tc.minigame.Minigame;
 
 public class WaterTheMonument extends Minigame{
 	
-	public WaterTheMonument(Map map){
-		super(map);
+	public WaterTheMonument(Map map, int id){
+		super(map, id);
 	}
 }
 

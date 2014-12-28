@@ -36,7 +36,8 @@ public class Timer {
 					Bukkit.broadcastMessage(ChatColor.DARK_GREEN+"Cambiando al mapa: "+ChatColor.GREEN+ChatColor.BOLD+Minigame.getNextMap().getName()+ChatColor.RESET+ChatColor.DARK_GREEN+" en "+ChatColor.GREEN+ChatColor.BOLD+Timer.countdown);
 					Timer.countdown--;
 				} else {
-					Minigame.loadMinigame(Minigame.getNextMap());
+					Main.setId(Main.getId()+1);
+					Minigame.loadMinigame(Minigame.getNextMap(), Main.getId());
 					Bukkit.getScheduler().cancelTask(taskToCancel);
 				}
 			}
