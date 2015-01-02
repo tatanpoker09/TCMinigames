@@ -26,8 +26,8 @@ public class UnirCommand implements CommandExecutor{
 		Player playerSender = (Player)sender;
 		if(Minigame.getCurrentMinigame()!=null){
 			if(Minigame.getCurrentMinigame().getMap().getType().equals(MapType.CIRCLE_OF_BOOM)){
-				if(Minigame.getCurrentMinigame().getState().equals(MatchState.STARTED)){
-					sender.sendMessage(ChatColor.DARK_RED+"[TCMinigames]"+ChatColor.RED+"No puedes unirte en este momento.");
+				if(!Minigame.getCurrentMinigame().getState().equals(MatchState.PREMATCH)){
+					sender.sendMessage(ChatColor.DARK_RED+"[TCMinigames]"+ChatColor.RED+"No puedes unirte en este momento, recarga el mapa.");
 				} else {
 					if(args.length==0){
 						ArrayList<Team> teamsInGame = new ArrayList<Team>();

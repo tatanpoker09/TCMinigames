@@ -3,6 +3,7 @@ package cl.eilers.tatanpoker09.tc.minigame.cob;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -31,6 +32,9 @@ public class CircleOfBoom extends Minigame{
 
 	public CircleOfBoom(Map map, int id) {
 		super(map, id);
+		for(Player player : Bukkit.getOnlinePlayers()){
+			player.setLevel(0);
+		}
 		getSurvivors().clear();
 		loadYML();
 		setBlocksInCircle(COBUtils.loadBlocks(center, radius));
@@ -72,12 +76,6 @@ public class CircleOfBoom extends Minigame{
 		}
 		if(isSpawnPointCapacity()){
 			Team.getTeam("Survivors").setMaxCapacity(spawnPoints.size());
-		} else {
-			if(ymlFile.getInt("maxcapacity")==0){
-				Team.getTeam("Survivors").setMaxCapacity(999);
-			} else {
-				Team.getTeam("Survivors").setMaxCapacity(ymlFile.getInt("maxcapacity"));
-			}
 		}
 	}
 

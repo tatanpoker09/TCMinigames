@@ -7,7 +7,7 @@ public class TatanUtils {
 			@SuppressWarnings("unused")
 			double Number = Double.parseDouble(str); 
 		}catch(NumberFormatException nfe){  
-			System.out.println(nfe.getStackTrace());
+			System.err.println(nfe.getStackTrace());
 			return false;  
 		}  
 		return true;  

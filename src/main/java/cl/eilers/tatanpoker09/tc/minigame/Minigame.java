@@ -24,6 +24,8 @@ public class Minigame {
 	private static Minigame currentMinigame;
 	private int id;
 	private World world;
+	private ArrayList<SpecialItem> specialItems = new ArrayList<SpecialItem>();
+	private org.bukkit.scoreboard.Scoreboard board;
 
 	public Minigame(Map map, int id){
 		observers = new Team("Observers", ChatColor.AQUA);
@@ -36,9 +38,21 @@ public class Minigame {
 		state = MatchState.PREMATCH;
 		getObservers().setSpawn(ScoreboardUtils.getLocation(getMap().getYmlConfig().getString("spawn"), this));
 		for(String name : getMap().getYmlConfig().getConfigurationSection("teams").getKeys(false)){
+			int maxCapacity = 43526;
+			if(getMap().getYmlConfig().get("teams."+name+".maxcapacity")!=null){
+				maxCapacity = this.getMap().getYmlConfig().getInt("teams."+name+".maxcapacity");
+			}
+			if(maxCapacity == 0){
+				maxCapacity = 999;
+			}
 			ChatColor color = ChatColor.valueOf(getMap().getYmlConfig().getString("teams."+name+".color"));
-			addTeam(new Team(name, color));
+			if(maxCapacity!=43526){
+				addTeam(new Team(maxCapacity, name, color));
+			} else {
+				addTeam(new Team(name, color));
+			}
 		}
+		Scoreboard.loadScoreboard(this);
 		for(Player player : Bukkit.getOnlinePlayers()){
 			player.teleport(getObservers().getSpawn());
 			player.setGameMode(GameMode.CREATIVE);
@@ -135,5 +149,24 @@ public class Minigame {
 	}
 	public World getWorld(){
 		return world;
+	}
+
+
+	public org.bukkit.scoreboard.Scoreboard getBoard() {
+		return board;
+	}
+
+
+	public void setBoard(org.bukkit.scoreboard.Scoreboard scoreboard) {
+		this.board = scoreboard;
+	}
+
+	public ArrayList<SpecialItem> getSpecialItems() {
+		return specialItems;
+	}
+
+
+	public void addSpecialItems(SpecialItem specialItem) {
+		specialItems.add(specialItem);
 	}
 }

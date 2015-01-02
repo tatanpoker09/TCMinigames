@@ -19,20 +19,19 @@ import cl.eilers.tatanpoker09.tc.listeners.PlayerListener;
 import cl.eilers.tatanpoker09.tc.listeners.WeatherListener;
 import cl.eilers.tatanpoker09.tc.minigame.Map;
 /*TODO
- * TEST YML LOADING
- * TEST TEAM LOADING
- * TEST ID TO MINIGAME OBJECT, ID++ AFTER EACH TACO
- * START SCOREBOARD LOADING
+ * TEST SCOREBOARD LOADING
  * GET DEFAULT MAPS FOR EACH GAMEMODE
  * 
  * KNOWN BUGS:
- * WORLD IS NULL AFTER REPLAYING SAME MAP
+ * PLAYERS ABLE TO DRINK POTIONS
  */
 public class Main extends JavaPlugin{
 	private static int id;
 	private static Plugin plugin;
 	private static final File mapsDirectory = new File("TCMaps");
+	private boolean useHolographicDisplays;
 	public void onEnable(){
+		 setUseHolographicDisplays(Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays"));
 		setId(0);
 		getLogger().info("TCMinigames has been enabled!");
 		if(getMapsDirectory()==null)	generateLobby();
@@ -76,5 +75,13 @@ public class Main extends JavaPlugin{
 
 	public static void setId(int id) {
 		Main.id = id;
+	}
+
+	public boolean isUseHolographicDisplays() {
+		return useHolographicDisplays;
+	}
+
+	public void setUseHolographicDisplays(boolean useHolographicDisplays) {
+		this.useHolographicDisplays = useHolographicDisplays;
 	}
 }

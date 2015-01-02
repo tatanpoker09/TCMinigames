@@ -68,6 +68,7 @@ public class Team {
 	public void addPlayer(Player player){
 		player.sendMessage(ChatColor.GREEN+"Has entrado a: "+this.getColor()+this.getName());
 		players.add(player);
+		player.setDisplayName(this.color + "" + ChatColor.stripColor(player.getDisplayName())+ChatColor.WHITE);
 		if(Minigame.getCurrentMinigame().getMap().getType().equals(MapType.CIRCLE_OF_BOOM) && !this.equals(Minigame.getObservers())){
 			((CircleOfBoom)Minigame.getCurrentMinigame()).addSurvivor(new Survivor(player));
 		}

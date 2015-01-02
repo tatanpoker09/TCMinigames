@@ -8,3 +8,4 @@ commands:
   jugar:
   cycle:
   debugteams:
+softdepend: [HolographicDisplays]
